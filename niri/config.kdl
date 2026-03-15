@@ -274,7 +274,7 @@ spawn-at-startup "fcitx5" "-d"
 spawn-at-startup "mako"
 spawn-at-startup "swww-daemon"
 spawn-at-startup "swww" "img" "/home/tree/Pictures/wallpaper.gif"
-spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri"
+spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP=niri && systemctl --user restart xdg-desktop-portal"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
@@ -324,6 +324,13 @@ window-rule {
 window-rule {
   match app-id="Google-chrome"
   default-column-width { proportion 0.6;}
+}
+
+window-rule {
+  match is-floating=true
+  border {
+    off
+  }
 }
 
 binds {
