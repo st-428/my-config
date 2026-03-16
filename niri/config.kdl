@@ -272,10 +272,11 @@ layout {
 // spawn-at-startup "waybar"
 spawn-at-startup "fcitx5" "-d"
 spawn-at-startup "mako"
-spawn-at-startup "swww-daemon"
 spawn-at-startup "mpvpaper" "-o" "no-audio --loop-playlist" "DP-3" "/home/tree/Pictures/wallpaper.mp4"
 spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP=niri && systemctl --user restart xdg-desktop-portal"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'"
+spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
+spawn-at-startup "xhost +si:localuser:root"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
