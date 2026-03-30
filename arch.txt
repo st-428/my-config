@@ -1,0 +1,121 @@
+高度自定義
+效能極大化
+硬體資源直通
+個人化美觀與操作習慣
+優良開發體驗
+AI支援
+
+筆記：（虛擬機內須下載）
+spice-vdagent
+qemu-guest-agent
+
+核心驅動：
+nvidia-open
+nvidia-utils
+cuda
+nvidia-container-toolkit
+vulkan-intel
+intel-ucode
+
+下載工具：
+wget
+curl
+git
+
+解壓工具：
+p7zip
+unrar
+unzip
+zip
+
+編譯工具：
+python
+nodejs
+npm
+base-devel
+
+系統工具：
+gparted
+openssh
+neovim
+visidata
+ripgrep
+htop
+nethogs
+nvtop
+fastfetch
+fish
+loupe
+mpv
+pandoc
+
+字體：
+ttf-jetbrains-mono-nerd
+noto-fonts-cjk
+fcitx5-im
+fcitx5-chewing
+
+桌面工具：
+niri
+xwayland-satellite
+fuzzel
+alacritty
+xdg-desktop-portal
+wl-clipboard
+mpvpaper
+mako
+hyprlock
+nautilus
+gvfs
+libnautilus-extension
+polkit-kde-agent
+xorg-xhost
+nwg-look
+
+虛擬化與防火牆：
+ufw
+tailscale
+qemu-desktop
+libvirt
+dnsmasq
+libguestfs
+virt-manager
+docker
+docker-compose
+
+啟動服務：
+sudo sed -i 's/deny = 3/deny = 0/' /etc/security/faillock.conf
+
+/etc/security/faillock.conf的deny=0取消註解
+
+下載yay
+git clone https://aur.archlinux.org/yay.git ~/build/yay
+cd ~/build/yay
+makepkg -si
+
+fc-cache -fv
+
+yay -S google-chrome
+yay -S tty-clock
+
+sudo systemctl enable --now libvirtd
+sudo systemctl enable --now tailscaled
+sudo systemctl enable --now docker
+sudo systemctl enable --now ufw
+
+sudo usermod -aG libvirt,kvm $USER
+sudo usermod -aG docker $USER
+sudo tailscale up
+sudo tailscale up --ssh
+sudo ufw allow ssh
+sudo ufw enable
+
+/etc/environment：
+AQ_DRM_DEVICES=/dev/dri/by-path/pci-0000:00:02.0-card
+XMODIFIERS=@im=fcitx
+SDL_IM_MODULE=fcitx
+ELECTRON_OZONE_PLATFORM_HINT=auto
+
+/etc/mkinitcpio.conf：
+MODULES=(i915 nvidia nvidia_modeset nvidia_uvm)
+（終端機輸入sudo mkinitcpio -P)
