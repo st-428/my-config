@@ -9,6 +9,17 @@ if true then return {} end
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
+  -- 這行就相當於把選單功能「註釋掉」不使用
+  { "zbirenbaum/copilot-cmp", enabled = false },
+
+  -- 這行是把原本被隱藏的灰色字（Ghost Text）重新打開
+  {
+    "zbirenbaum/copilot.lua",
+    opts = {
+      suggestion = { enabled = true, auto_trigger = true },
+    },
+  },
+
   -- add gruvbox
   { "ellisonleao/gruvbox.nvim" },
 

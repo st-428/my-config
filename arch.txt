@@ -14,7 +14,7 @@ nvidia-open
 nvidia-utils
 cuda
 nvidia-container-toolkit
-vulkan-intel
+libva-nvidia-driver
 intel-ucode
 
 下載工具：
@@ -38,16 +38,14 @@ base-devel
 gparted
 openssh
 neovim
-visidata
 ripgrep
 htop
-nethogs
 nvtop
 fastfetch
 fish
-loupe
 mpv
 pandoc
+blender
 
 字體：
 ttf-jetbrains-mono-nerd
@@ -99,23 +97,38 @@ yay -S google-chrome
 yay -S tty-clock
 
 sudo systemctl enable --now libvirtd
+sudo systemctl enable --now virtnetworkd
+sudo systemctl enable --now virtstoraged
 sudo systemctl enable --now tailscaled
 sudo systemctl enable --now docker
 sudo systemctl enable --now ufw
 
+sudo virsh net-start default
+sudo virsh net-autostart default
 sudo usermod -aG libvirt,kvm $USER
 sudo usermod -aG docker $USER
 sudo tailscale up
 sudo tailscale up --ssh
-sudo ufw allow ssh
-sudo ufw enable
 
 /etc/environment：
-AQ_DRM_DEVICES=/dev/dri/by-path/pci-0000:00:02.0-card
+# 輸入法 (你原本的)
 XMODIFIERS=@im=fcitx
 SDL_IM_MODULE=fcitx
+
+# 讓 Chrome 支援 Wayland 且原生跑在 GPU 上
 ELECTRON_OZONE_PLATFORM_HINT=auto
 
+# --- 以下為 NVIDIA 關鍵補強 ---
+# 強制使用 NVIDIA 的 GBM 後端 (Niri 必備)
+GBM_BACKEND=nvidia-drm
+# 讓應用程式介面由 NVIDIA 負責渲染
+__GLX_VENDOR_LIBRARY_NAME=nvidia
+# 解決滑鼠游標在某些 Wayland 下不見的問題
+WLR_NO_HARDWARE_CURSORS=1
+# 修正特定工具的 Vulkan 支援
+ENABLE_VULKAN_RENDERER=1
+
+
 /etc/mkinitcpio.conf：
-MODULES=(i915 nvidia nvidia_modeset nvidia_uvm)
+MODULES=(i915 nvidia nvidia_modeset nvidia_uvm nvidia_drm)
 （終端機輸入sudo mkinitcpio -P)

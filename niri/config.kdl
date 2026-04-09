@@ -76,7 +76,7 @@ input {
 // Find more information on the wiki:
 // https://yalter.github.io/niri/Configuration:-Outputs
 // Remember to uncomment the node by removing "/-"!
-output "DP-3" {
+output "DP-2" {
     // Uncomment this line to disable this output.
     // off
 
@@ -270,14 +270,21 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.i
 // spawn-at-startup "waybar"
+
+// 1. 核心環境變數與 Portal 同步 (含 NVIDIA 修復)
+spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP=niri GBM_BACKEND=nvidia-drm __GLX_VENDOR_LIBRARY_NAME=nvidia && systemctl --user restart xdg-desktop-portal"
+
+// 2. 顯示服務
+spawn-at-startup "xwayland-satellite"
+spawn-at-startup "swaybg" "-m" "fill" "-i" "/home/tree/Pictures/wallpaper-remove-mhk.png"
+
+// 3. 系統組件
 spawn-at-startup "fcitx5" "-d"
 spawn-at-startup "mako"
-spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP=niri && systemctl --user restart xdg-desktop-portal"
 spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
-// spawn-at-startup "mpvpaper" "-o" "no-audio --loop-playlist" "DP-3" "/home/tree/Pictures/wallpaper.mp4"
-spawn-at-startup "swaybg" "-m" "fill" "-i" "/home/tree/Pictures/wallpaper-remove-mhk.png"
-// initial monitor desktop
 spawn-at-startup "xhost +si:localuser:root"
+
+// 4. 其他個人腳本
 spawn-sh-at-startup "/home/tree/.config/niri/autostart.sh"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
