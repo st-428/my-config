@@ -12,7 +12,7 @@ DRIVERS="nvidia-open nvidia-utils cuda nvidia-container-toolkit libva-nvidia-dri
 TOOLS="wget curl git p7zip unrar unzip zip python nodejs npm base-devel"
 SYSTEM="gparted openssh neovim ripgrep htop nvtop fastfetch fish mpv pandoc blender"
 FONTS="ttf-jetbrains-mono-nerd noto-fonts-cjk fcitx5-im fcitx5-chewing"
-DESKTOP="niri xwayland-satellite fuzzel alacritty xdg-desktop-portal wl-clipboard mpvpaper mako hyprlock nautilus gvfs libnautilus-extension polkit-kde-agent xorg-xhost nwg-look"
+DESKTOP="niri xwayland-satellite fuzzel alacritty xdg-desktop-portal wl-clipboard mako hyprlock nautilus gvfs libnautilus-extension polkit-kde-agent xorg-xhost nwg-look"
 VIRT="ufw tailscale qemu-desktop libvirt dnsmasq libguestfs virt-manager docker docker-compose"
 
 sudo pacman -Syu --noconfirm
@@ -47,21 +47,16 @@ if ! command -v yay &>/dev/null; then
 fi
 
 echo "--- 6. 使用 yay 安裝其餘軟體 ---"
-yay -S --noconfirm google-chrome tty-clock
+yay -S --noconfirm google-chrome tty-clock mpvpaper 
 
 echo "--- 7. 啟動所有系統服務 ---"
-services=(libvirtd virtnetworkd virtstoraged tailscaled docker ufw)
+services=(tailscaled docker ufw)
 for svc in "${services[@]}"; do
   sudo systemctl enable --now "$svc"
 done
 
-echo "--- 8. 設定虛擬化網路 (Libvirt) ---"
-sleep 2
-sudo virsh net-start default 2>/dev/null || echo "Default network already active."
-sudo virsh net-autostart default
-
 echo "--- 9. 使用者權限設定 ---"
-sudo usermod -aG libvirt,kvm,docker $USER
+sudo usermod -aG kvm,docker $USER
 
 echo "--- 10. 網路與字體設定 ---"
 sudo tailscale up --ssh
