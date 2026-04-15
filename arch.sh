@@ -35,7 +35,7 @@ EOF'
 
 echo "--- 4. 設定 mkinitcpio (預載驅動) ---"
 # 加入 i915 (Intel) 與 nvidia 系列模組
-sudo sed -i 's/^MODULES=(.*/MODULES=(i915 nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+sudo sed -i 's/^MODULES=(.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm i915 )/' /etc/mkinitcpio.conf
 sudo mkinitcpio -P
 
 echo "--- 5. 安裝 yay (在暫存區編譯) ---"
@@ -59,7 +59,6 @@ echo "--- 9. 使用者權限設定 ---"
 sudo usermod -aG kvm,docker $USER
 
 echo "--- 10. 網路與字體設定 ---"
-sudo tailscale up --ssh
 fc-cache -fv
 
 echo "--- 11. 從 GitHub 恢復 Dotfiles 設定 ---"
